@@ -1,4 +1,4 @@
-#include "MaterialBibliografico.h"
+#include "../include/MaterialBibliografico.h"
 #include <iostream>
 
 MaterialBibliografico::MaterialBibliografico(std::string nombre, std::string isbn, std::string autor, bool prestado): 

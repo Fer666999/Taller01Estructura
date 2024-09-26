@@ -17,6 +17,9 @@ public:
     void prestarMaterial(MaterialBibliografico* material);
     void devolverMaterial(MaterialBibliografico* material);
     void mostrarMaterialesPrestados() const;
+    // Métodos Getters
+    std::string getNombre() const;
+    std::string getID() const;
 };
 
 #endif

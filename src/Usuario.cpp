@@ -1,4 +1,4 @@
-#include "Usuario.h"
+#include "../include/Usuario.h"
 #include <iostream>
 
 Usuario::Usuario(std::string nombre, std::string id) : nombre(nombre), id(id), cantidadPrestados(0) {
@@ -12,7 +12,7 @@ void Usuario::prestarMaterial(MaterialBibliografico* material) {
         materialesPrestados[cantidadPrestados] = material;
         material->setPrestado(true);
         cantidadPrestados++;
-        std::cout << "Material prestado con éxito." << std::endl;
+        std::cout << "Material prestado con exito." << std::endl;
     } else if (cantidadPrestados >= 5) {
         std::cout << "No puedes prestar más de 5 materiales." << std::endl;
     } else {
@@ -26,11 +26,11 @@ void Usuario::devolverMaterial(MaterialBibliografico* material) {
             materialesPrestados[i] = nullptr;
             material->setPrestado(false);
             cantidadPrestados--;
-            std::cout << "Material devuelto con éxito." << std::endl;
+            std::cout << "Material devuelto con exito." << std::endl;
             return;
         }
     }
-    std::cout << "No se encontró el material prestado." << std::endl;
+    std::cout << "No se encontro el material prestado." << std::endl;
 }
 
 void Usuario::mostrarMaterialesPrestados() const {
@@ -40,4 +40,13 @@ void Usuario::mostrarMaterialesPrestados() const {
             materialesPrestados[i]->mostrarInformacion();
         }
     }
+
+
 }
+std::string Usuario::getNombre() const {
+    return nombre;
+}
+std::string Usuario::getID() const {
+    return id;
+}
+

@@ -1,26 +1,58 @@
 #include <iostream>
 #include <string>
-#include "Libro.h"
-#include "Revista.h"
-#include "Usuario.h"
+#include <vector>
+#include "../include/Libro.h"
+#include "../include/Revista.h"
+#include "../include/Usuario.h"
 
 const int MAX_MATERIALES = 100;
 
 int main() {
+    // Biblioteca y usuarios
     MaterialBibliografico* biblioteca[MAX_MATERIALES];
     int cantidadMateriales = 0;
 
-    Usuario usuario1("Fernando Aranda", "001"); // Usuario de ejemplo
+    std::vector<Usuario> listaUsuarios;
+    listaUsuarios.push_back(Usuario("Fernando Aranda", "001")); // Usuario de ejemplo
+
+    Usuario* usuarioActivo = nullptr;
+
+    // Selección inicial del usuario activo
+    std::string nombreUsuario, idUsuario;
+    std::cout << "----- Iniciar Sesion -----\n";
+    std::cout << "Ingrese su nombre: ";
+    std::cin.ignore(); // Ignorar el carácter de nueva línea residual
+    std::getline(std::cin, nombreUsuario); // Leer nombre completo del usuario
+    std::cout << "Ingrese su ID: ";
+    std::getline(std::cin, idUsuario); // Leer ID completo del usuario
+
+    // Verificar si el usuario existe, si no, se agrega a la lista
+    bool usuarioEncontrado = false;
+    for (auto& usuario : listaUsuarios) {
+        if (usuario.getNombre() == nombreUsuario && usuario.getID() == idUsuario) {
+            usuarioActivo = &usuario;
+            usuarioEncontrado = true;
+            break;
+        }
+    }
+
+    if (!usuarioEncontrado) {
+        listaUsuarios.push_back(Usuario(nombreUsuario, idUsuario));
+        usuarioActivo = &listaUsuarios.back();
+        std::cout << "Nuevo usuario agregado.\n";
+    }
 
     int opcion;
     do {
         std::cout << "\n----- Menu de Biblioteca Digital -----\n";
+        std::cout << "Usuario activo: " << usuarioActivo->getNombre() << " (" << usuarioActivo->getID() << ")\n";
         std::cout << "1. Agregar Libro\n";
         std::cout << "2. Agregar Revista\n";
         std::cout << "3. Prestar Material\n";
         std::cout << "4. Devolver Material\n";
         std::cout << "5. Mostrar Materiales Prestados\n";
-        std::cout << "6. Salir\n";
+        std::cout << "6. Cambiar Usuario\n";
+        std::cout << "7. Salir\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
 
@@ -43,7 +75,7 @@ int main() {
                     cantidadMateriales++;
                     std::cout << "Libro agregado con exito.\n";
                 } else {
-                    std::cout << "La biblioteca está llena.\n";
+                    std::cout << "La biblioteca esta llena.\n";
                 }
                 break;
             }
@@ -78,8 +110,9 @@ int main() {
                 bool encontrado = false;
                 for (int i = 0; i < cantidadMateriales; i++) {
                     if (biblioteca[i]->getNombre() == nombreMaterial && !biblioteca[i]->estaPrestado()) {
-                        usuario1.prestarMaterial(biblioteca[i]);
+                        usuarioActivo->prestarMaterial(biblioteca[i]);
                         encontrado = true;
+                        std::cout << "Material prestado con exito.\n";
                         break;
                     }
                 }
@@ -96,8 +129,9 @@ int main() {
                 bool encontrado = false;
                 for (int i = 0; i < cantidadMateriales; i++) {
                     if (biblioteca[i]->getNombre() == nombreMaterial && biblioteca[i]->estaPrestado()) {
-                        usuario1.devolverMaterial(biblioteca[i]);
+                        usuarioActivo->devolverMaterial(biblioteca[i]);
                         encontrado = true;
+                        std::cout << "Material devuelto con exito.\n";
                         break;
                     }
                 }
@@ -107,16 +141,41 @@ int main() {
                 break;
             }
             case 5: {
-                usuario1.mostrarMaterialesPrestados();
+                usuarioActivo->mostrarMaterialesPrestados();
                 break;
             }
-            case 6:
+            case 6: {
+                std::cout << "----- Cambiar Usuario -----\n";
+                std::cout << "Ingrese su nombre: ";
+                std::cin.ignore(); // Ignorar el carácter de nueva línea residual
+                std::getline(std::cin, nombreUsuario); // Leer nombre completo del usuario
+                std::cout << "Ingrese su ID: ";
+                std::getline(std::cin, idUsuario); // Leer ID completo del usuario
+
+                usuarioEncontrado = false;
+                for (auto& usuario : listaUsuarios) {
+                    if (usuario.getNombre() == nombreUsuario && usuario.getID() == idUsuario) {
+                        usuarioActivo = &usuario;
+                        usuarioEncontrado = true;
+                        std::cout << "Usuario cambiado con exito.\n";
+                        break;
+                    }
+                }
+
+                if (!usuarioEncontrado) {
+                    listaUsuarios.push_back(Usuario(nombreUsuario, idUsuario));
+                    usuarioActivo = &listaUsuarios.back();
+                    std::cout << "Nuevo usuario agregado.\n";
+                }
+                break;
+            }
+            case 7:
                 std::cout << "Saliendo del programa...\n";
                 break;
             default:
                 std::cout << "Opción no válida.\n";
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
 
     // Liberar memoria al final
     for (int i = 0; i < cantidadMateriales; i++) {

@@ -1,4 +1,4 @@
-#include "Libro.h"
+#include "../include/Libro.h"
 #include <iostream>
 
 Libro::Libro(std::string nombre, std::string isbn, std::string autor, std::string fechaPublicacion, std::string resumen): 
