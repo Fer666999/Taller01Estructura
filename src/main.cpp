@@ -13,7 +13,19 @@ int main() {
     int cantidadMateriales = 0;
 
     std::vector<Usuario> listaUsuarios;
-    listaUsuarios.push_back(Usuario("Fernando Aranda", "001")); // Usuario de ejemplo
+    // Usuario de ejemplo
+    listaUsuarios.push_back(Usuario("Fernando Aranda", "001")); 
+    // Libros de ejemplo
+    if (cantidadMateriales < MAX_MATERIALES) {
+        biblioteca[cantidadMateriales++] = new Libro("Cien años de soledad", "978-3-16-148410-0", "Gabriel García Márquez", "1967", "La historia de la familia Buendía.");
+        biblioteca[cantidadMateriales++] = new Libro("Don Quijote de la Mancha", "978-0-7432-7356-5", "Miguel de Cervantes", "1605", "Las aventuras de un caballero loco.");
+    }
+
+    // Revistas de ejemplo
+    if (cantidadMateriales < MAX_MATERIALES) {
+        biblioteca[cantidadMateriales++] = new Revista("National Geographic", "978-0-1234-5678-9", "John Doe", 152, "Enero");
+        biblioteca[cantidadMateriales++] = new Revista("Scientific American", "978-1-2345-6789-0", "Jane Roe", 248, "Febrero");
+    }
 
     Usuario* usuarioActivo = nullptr;
 
